@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_inter.c                                         :+:      :+:    :+:   */
+/*   inter.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aortega- <aortega-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 17:12:45 by aortega-          #+#    #+#             */
-/*   Updated: 2020/01/14 19:09:54 by aortega-         ###   ########.fr       */
+/*   Updated: 2020/01/15 12:30:11 by aortega-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,3 +56,23 @@ int         main (int argc, char **argv)
     if (argc == 3)
         ft_inter(argv[1], argv[2]);
 }
+
+/*Escriba un programa que reciba como parámetros dos cadenas de caracteres y que
+muestre, sin duplicados, los caracteres comunes a las dos cadenas. 
+
+Se mostrarán en el orden de aparición dentro de la primera cadena.
+La visualización se debe terminar con un salto de línea.
+
+Si el número de parámetros transmitidos es distinto de 2, el programa mostrará
+'\n'.
+
+Ejemplos:
+$>./inter "padinton" "paqefwtdjetyiytjneytjoeyjnejeyj" | cat -e
+padinto$
+$>./inter ddf6vewg64f gtwthgdwthdwfteewhrtag6h4ffdhsd | cat -e
+df6ewg4$
+$>./inter "algo" "no crea que esta frase esconde algo" | cat -e
+algo$
+$>./inter | cat -e
+$
+*/
