@@ -142,7 +142,7 @@ int					output(int ret, char **s, char **line)
 {
 	if (ret < 0)
 		return (-1);
-	else if (ret == 0 && (s[0] == NULL || s[0][0] == '\0'))
+	else if (ret == 0 && (s[0] == NULL || s[0] == '\0'))
 	{
 		*line = ft_strdup("");
 		ft_strdel(&s[0]);
