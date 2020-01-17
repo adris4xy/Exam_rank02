@@ -1,12 +1,13 @@
+  
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aortega- <aortega-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/16 13:31:46 by aortega-          #+#    #+#             */
-/*   Updated: 2020/01/16 17:49:09 by aortega-         ###   ########.fr       */
+/*   Created: 2019/11/20 17:09:45 by aortega-          #+#    #+#             */
+/*   Updated: 2019/11/26 18:19:42 by aortega-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +21,15 @@ size_t	ft_strlen(const char *str)
 	while (str[i] != '\0')
 		i++;
 	return (i);
+}
+
+void	ft_bzero(void *s, size_t n)
+{
+	unsigned char *ptr;
+
+	ptr = (unsigned char*)s;
+	while (n-- > 0)
+		*(ptr++) = 0;
 }
 
 char	*ft_strdup(const char *s)
@@ -61,15 +71,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (str);
 	}
 	return (0);
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	unsigned char *ptr;
-
-	ptr = (unsigned char*)s;
-	while (n-- > 0)
-		*(ptr++) = 0;
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
@@ -122,37 +123,37 @@ static void			ft_strdel(char **str)
 	}
 }
 
-int					ft_putline(char *s, char **line)
+int					ft_putline(char **s, char **line)
 {
 	int		size;
 	char	*tmp;
 
 	size = 0;
-	while (s[size] != '\n')
+	while (s[0][size] != '\n')
 		size++;
-	*line = ft_substr(s, 0, size);
-	tmp = ft_strdup(&s[size + 1]);
-	free(s);
-	s = tmp;
+	*line = ft_substr(s[0], 0, size);
+	tmp = ft_strdup(&s[0][size + 1]);
+	free(s[0]);
+	s[0] = tmp;
 	return (1);
 }
 
-int					output(int ret, char *s, char **line)
+int					output(int ret, char **s, char **line)
 {
 	if (ret < 0)
 		return (-1);
-	else if (ret == 0 && (s == NULL || s[0] == '\0'))
+	else if (ret == 0 && (s[0] == NULL || s[0][0] == '\0'))
 	{
 		*line = ft_strdup("");
-		ft_strdel(&s);
+		ft_strdel(&s[0]);
 		return (0);
 	}
-	else if (ft_strchr(s, '\n'))
+	else if (ft_strchr(s[0], '\n'))
 		return (ft_putline(s, line));
 	else
 	{
-		*line = ft_strdup(s);
-		ft_strdel(&s);
+		*line = ft_strdup(s[0]);
+		ft_strdel(&s[0]);
 		return (0);
 	}
 }
@@ -160,7 +161,7 @@ int					output(int ret, char *s, char **line)
 int					get_next_line(char **line)
 {
 	int				ret;
-	static char		*s;
+	static char		*s[1];
 	char			*buff;
 	char			*tmp;
 
@@ -171,15 +172,15 @@ int					get_next_line(char **line)
 	while ((ret = read(0, buff, BUFFER_SIZE)) > 0)
 	{
 		buff[ret] = '\0';
-		if (s == NULL)
-			s = ft_strdup(buff);
+		if (s[0] == NULL)
+			s[0] = ft_strdup(buff);
 		else
 		{
-			tmp = ft_strjoin(s, buff);
-			free(s);
-			s = tmp;
+			tmp = ft_strjoin(s[0], buff);
+			free(s[0]);
+			s[0] = tmp;
 		}
-		if (ft_strchr(s, '\n'))
+		if (ft_strchr(s[0], '\n'))
 			break ;
 	}
 	free(buff);
@@ -188,6 +189,7 @@ int					get_next_line(char **line)
 
 int main(int argc, char **argv)
 {
+	int fd;
 	int ret;
 	int line;
 	char *buff;
@@ -199,6 +201,7 @@ int main(int argc, char **argv)
 		i = 0;
 		while (++i < argc)
 		{
+			fd = open(argv[i], O_RDONLY);
 			printf("%d- archivo: %s\n",i, argv[i]);
 			while ((ret = get_next_line(&buff)) > 0)
 			{
@@ -217,47 +220,13 @@ int main(int argc, char **argv)
 	{
 		while ((ret = get_next_line(&buff)) > 0)
 			printf("[Return: %d] Line #%d: %s\n", ret, ++line, buff);
+		printf("[Return: %d] Line #%d: %s\n", ret, ++line, buff);
 		if (ret == -1)
 			printf("-----------\nError\n");
 		else if (ret == 0)
 			printf("-----------\nEnd of stdin\n");
 		free(buff);
+		close(fd);
 	}
 	return (0);
 }
-/*
-Assignment name  : get_next_line
-Expected files   : get_next_line.c get_next_line.h
-Allowed functions: read, free, malloc
---------------------------------------------------------------------------------
-
-Escriba una función que almacene en el parámetro "line" una línea leída desde el "file descriptor" 0.
-
-El prototipo de la función será el siguiente: int get_next_line(char **line);
-
-Su función no puede provocar fugas de memoria (memory leak).
-
-Lo que llamamos una "línea leída" es una sucesión de 0 a n caracteres que termina con un '\n' (código ASCII 0x0a) o un Final De Archivo (EOF).
-
-La cadena de caracteres almacenada en "line" no debe contener '\n'.
-
-El parámetro de la función es la dirección de un puntero a carácter y servirá para guardar la línea leída.
-
-El valor de retorno será 1, 0 o -1 en función de si se ha leído una línea, se ha terminado de leer (lo que significa que read ha devuelto 0) o ha ocurrido algún error, respectivamente.
-
-Si su función llega al "final del archivo" (EOF), debe almacenar el "buffer" actual en "line". Si el "buffer" está vacío, "line" tendría que apuntar hacia una cadena de caracteres vacía.
-
-Si su función llega al "final del archivo" (EOF), salvo el último "buffer" almacenado en "line", no debería conservar ningún espacio de memoria reservado por malloc.
-
-El contenido de "line" tendrá que poder ser liberado con la función free.
-
-Una llamada en bucle de get_next_line le permitirá leer la totalidad del texto disponible a través de un "file descriptor", línea por línea. Todo esto, independientemente del tamaño del texto o de una de sus líneas.
-
-Asegúrese de que su función funciona correctamente si hace la lectura desde un archivo, la entrada estándar, una redirección, etc.
-
-Tenga en cuenta que, entre 2 llamadas a su función get_next_line, no se realizará ninguna otra llamada al "file descriptor".
-
-Por último, el comportamiento de su get_next_line será indeterminado si lo utilizamos sobre un contenido binario.
-
-Le animamos a que utilice el archivo test.sh para probar su get_next_line.
-*/
