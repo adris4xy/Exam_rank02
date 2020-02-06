@@ -6,7 +6,7 @@
 /*   By: aortega- <aortega-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 17:12:45 by aortega-          #+#    #+#             */
-/*   Updated: 2020/01/17 14:40:59 by aortega-         ###   ########.fr       */
+/*   Updated: 2020/02/06 11:27:51 by aortega-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int         main (int argc, char **argv)
     if (argc == 3)
         ft_inter(argv[1], argv[2]);
 	write(1, "\n", 1);
+	return (0);
 }
 
 /*Escriba un programa que reciba como parámetros dos cadenas de caracteres y que

@@ -6,131 +6,127 @@
 /*   By: aortega- <aortega-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 18:40:52 by aortega-          #+#    #+#             */
-/*   Updated: 2020/01/16 18:42:03 by aortega-         ###   ########.fr       */
+/*   Updated: 2020/02/04 15:39:04 by aortega-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void	ft_putchar(char c, int n)
 {
-	while (n-- > 0)
-	{
-		write (1, &c, 1);
-	}
+	while(n-- > 0)
+		write(1, &c, 1);
 }
 
 int	ft_strlen(char *s)
 {
-	int n = 0;
-	while (*s != '\0')
+	int i = 0;
+	while(*s != '\0')
 	{
-		n++;
+		i++;
 		s++;
 	}
-	return (n);
+	return (i);
 }
 
-int	ft_prints(int width, int p, int precision, char *s)
+int	ft_prints(int wid, int po, int prec, char *str)
 {
-	int l = s == NULL ? 6 : ft_strlen(s);
-	if (p > 0)
-	{
-		l = l > precision ? precision : l;
-	}
-	width = width > l ? width : l;
-	ft_putchar(' ', width - l);
-	write( 1, s == NULL ? "(null)" : s, l);
-	return (width);
+	int lon = str == NULL ? 6 : ft_strlen(str);
+	if(po > 0)
+		lon = lon > prec ? prec : lon;
+	wid = wid > lon ? wid : lon;
+	ft_putchar(' ', wid - lon);
+	write(1, str == NULL ? "(null)" : str, lon);
+	return (wid);
 }
 
-char *ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	long int n2 = n < 0 ? (long int)n * -1 : n;
 	long int na = n2;
-	int l = n <= 0 ? 1 : 0;
-	char *s;
-	while ( na > 0)
+	int	len = n <= 0 ? 1 : 0;
+	char *str;
+	while (na > 0)
 	{
 		na = na / 10;
-		l++;
+		len++;
 	}
-	if (!(s = malloc(sizeof (char) * (l + 1))))
-			return (NULL);
-	*(s+l) = '\0';
-	if (n < 0 )
-		*s = '-';
+	if (!(str = malloc(sizeof (char) * (len + 1))))
+		return (NULL);
+	*(str + len) = '\0';
+	if (n < 0)
+		*str = '-';
 	if (n == 0)
-		*s = '0';
+		*str = '0';
 	while (n2 > 0)
 	{
-		s[--l] = n2 % 10 + '0';
-		n2 /= 10;
+		str[--len] = n2 % 10 + '0';
+		n2 = n2 / 10;
 	}
-	return (s);
-
+	return (str);
 }
 
-int ft_printd(int w, int f, int p, int n)
+int	ft_printd(int wid, int po, int prec, int n)
 {
-	char *s = ft_itoa(n);
-	int l = f == 1 && p == 0 && n == 0 ? 0 : ft_strlen(s);
+	char *str = ft_itoa(n);
+	int lon = po == 1 && prec == 0 && n == 0 ? 0 : ft_strlen(str);
 	if (n < 0)
-		p = p > l - 1 ? p + 1 : l;
+		prec = prec > lon - 1 ? prec + 1 : lon;
 	else
-		p = p > l ? p : l;
-	w = w > p ?  w : p;
-	ft_putchar(' ', w - p);
+		prec = prec > lon ? prec : lon;
+	wid = wid > prec ? wid : prec;
+	ft_putchar(' ', wid - prec);
 	ft_putchar('-', n < 0 ? 1 : 0);
-	ft_putchar('0', p - l);
-	write (1, s + (n < 0 ? 1:0), l - (n < 0 ? 1:0) );
-   return (w);
+	ft_putchar('0', prec - lon);
+	write(1, str + (n < 0 ? 1: 0), lon - (n < 0 ? 1 : 0));
+	return (wid);
 }
-char *ft_itoax(unsigned int n)
+
+char	*ft_itoax(unsigned int n)
 {
+	char *str;
 	long int na = n;
-	int l =  0;
-	char *s;
-	while ( na > 0)
+	int len = 0;
+	while (na > 0)
 	{
 		na = na / 16;
-		l++;
+		len++;
 	}
-	if (!(s = malloc(sizeof (char) * (l + 1))))
-			return (NULL);
-	*(s+l) = '\0';
+	if (!(str = malloc(sizeof(char) * (len + 1))))
+		return (NULL);
+	*(str + len) = '\0';
 	if (n == 0)
-		*s = '0';
+		*str = '0';
 	while (n > 0)
 	{
-		s[--l] = n % 16 + (n % 16 > 9 ? 'W':'0');
-		n /= 16;
+		str[--len] = n % 16 + (n % 16 > 9 ? 'W' : '0');
+		n = n / 16;
 	}
-	return (s);
-
+	return (str);
 }
 
-int ft_printx(int w, int f, int p, unsigned int n)
+int	ft_printx(int wid, int po, int prec, unsigned int n)
 {
-	char *s = ft_itoax(n);
-	int l = f == 1 && p == 0 && n == 0 ? 0 : ft_strlen(s);
-	p = p > l ? p : l;
-	w = w > p ?  w : p;
-	ft_putchar(' ', w - p);
-	ft_putchar('0', p - l);
-	write (1, s , l);
-   return (w);
+	char *str = ft_itoax(n);
+	int lon = po == 1 && prec == 0 && n == 0 ? 0 : ft_strlen(str);
+	prec = prec > lon ? prec : lon;
+	wid = wid > prec ? wid : prec;
+	ft_putchar(' ', wid - prec);
+	ft_putchar('0', prec - lon);
+	write(1, str, lon);
+	return (wid);
 }
 
 int	ft_printf(const char *s, ...)
 {
-	int len = 0;
-	int p = 0;
-	int width = 0;
-	int precision = 0;
-	va_list ap;
+	int	len = 0;
+	int	width = 0;
+	int	point = 0;
+	int	precision = 0;
+	va_list	ap;
 	va_start(ap, s);
 	while (*s != '\0')
 	{
@@ -145,30 +141,30 @@ int	ft_printf(const char *s, ...)
 			if (*s == '.')
 			{
 				s++;
-				p = 1;
+				point = 1;
 				while (*s >= '0' && *s <= '9')
 				{
-					precision = precision * 10 + (*s -'0');
+					precision = precision * 10 + (*s - '0');
 					s++;
 				}
 			}
 			if (*s == 's')
 			{
-				len += ft_prints(width, p, precision, va_arg(ap, char *));
+				len = len + ft_prints(width, point, precision, va_arg(ap, char *));
 				s++;
 			}
 			else if (*s == 'd')
 			{
-				len += ft_printd(width, p, precision, va_arg(ap, int));
+				len = len + ft_printd(width, point, precision, va_arg(ap, int));
 				s++;
 			}
 			else if (*s == 'x')
 			{
-				len += ft_printx(width, p, precision, va_arg(ap, unsigned int));
+				len = len + ft_printx(width, point, precision, va_arg(ap, unsigned int));
 				s++;
 			}
-			p = 0;
 			width = 0;
+			point = 0;
 			precision = 0;
 		}
 		else
@@ -180,4 +176,16 @@ int	ft_printf(const char *s, ...)
 	}
 	va_end(ap);
 	return (len);
+}
+
+int main()
+{	
+	int x;
+	int y;
+
+	x = ft_printf("Hola %2.8s %3.5d %6.4x %x\n", "perro", 242321,2343, 15);
+	printf("%d\n", x);
+	y = printf("Hola %2.8s %3.5d %6.4x %x\n", "perro", 242321 ,2343, 15);
+	printf("%d\n", y);
+	return (0);
 }
