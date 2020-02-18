@@ -6,7 +6,7 @@
 /*   By: aortega- <aortega-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 18:40:52 by aortega-          #+#    #+#             */
-/*   Updated: 2020/02/04 15:39:04 by aortega-         ###   ########.fr       */
+/*   Updated: 2020/02/06 14:07:20 by aortega-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ int	ft_printf(const char *s, ...)
 	va_end(ap);
 	return (len);
 }
-
+/*
 int main()
 {	
 	int x;
@@ -189,3 +189,4 @@ int main()
 	printf("%d\n", y);
 	return (0);
 }
+*/
