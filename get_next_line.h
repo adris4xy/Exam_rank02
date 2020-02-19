@@ -3,25 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aortega- <aortega-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: egarcia- <egarcia-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/17 15:40:06 by aortega-          #+#    #+#             */
-/*   Updated: 2020/02/12 11:55:25 by aortega-         ###   ########.fr       */
+/*   Created: 2020/02/04 16:11:58 by egarcia-          #+#    #+#             */
+/*   Updated: 2020/02/04 16:54:39 by egarcia-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef     GET_NEXT_LINE_H
+#define     GET_NEXT_LINE_H
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
 
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 32
-# endif
-
-int		get_next_line(char **line);
-
+int     get_next_line(char **line);
 #endif
